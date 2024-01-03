@@ -1,0 +1,19 @@
+.background {
+    background-image: url('./R.gif');
+    background-size: cover;
+    background-position: center center;
+    width: 100%; /* Use 100% width */
+    height: 40vh;
+    margin: 0;
+    overflow: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+@media (max-width: 768px) {
+    /* Adjust styles for smaller screens */
+    .background {
+        height: 80vh; /* Adjust the height for smaller screens */
+    }
+}
