@@ -14,11 +14,14 @@ import axios from "axios";
 function Map(props) {
     let { aeroports } = useContext(AeroportContext);
     let { vols } = useContext(VolContext);
+    const positionsVerifiees = new Set();
     const visibleRef = useRef(null);
     let [i,setI] =useState(0);
     let [index,setIndex] =useState(0);
     let rotationAnglesArray = [];
     let Navigate=useNavigate();
+    const [monTableau, setMonTableau] = useState([]);
+
     useEffect(()=>{
         setI(0);
     },[index]);
@@ -31,6 +34,7 @@ function Map(props) {
         setI(0);
         moveImages();
         fetchData();
+        setMonTableau( Array(vols.length).fill(0))
     }
     async function fetchData() {
         try {
@@ -49,25 +53,23 @@ function Map(props) {
     };
 
     function s() {
- // Initialize the array to store rotation angles
+
 
         for (const vol of vols) {
-            let rotationAngles = []; // Initialize array for current trajectory
+            let rotationAngles = [];
 
             for (const point of vol.trajectoires) {
-                // Assuming `calculateRotationAngle` is a function that calculates the rotation angle
                 let rotationAngle = calculateRotationAngle(
                     [point?.aeroportDepart?.localisation?.x, point?.aeroportDepart?.localisation?.y],
                     [point?.aeroportArrivet?.localisation?.x, point?.aeroportArrivet?.localisation?.y]
                 );
 
-                rotationAngles.push(rotationAngle); // Add the rotation angle to the array
+                rotationAngles.push(rotationAngle);
             }
 
-            rotationAnglesArray.push(rotationAngles); // Add the array of rotation angles for the current trajectory to the main array
+            rotationAnglesArray.push(rotationAngles);
         }
 
-        // Now, rotationAnglesArray contains the rotation angles for all trajectories
         console.log("wd"+rotationAnglesArray);
     }
     s();
@@ -142,6 +144,11 @@ function Map(props) {
             requestAnimationFrame(animate);
         }
     };
+    const tab=[];
+    for (let j = 0; j < vols.length; j++) {
+        tab.push(0);
+        console.log("tab"+tab)
+    }
 
     const moveImages = () => {
         visibleRef.current = true;
@@ -161,13 +168,13 @@ function Map(props) {
             <AddVol/>
         </div>
         <button
-            className="position-absolute bottom-0 start-0 "
-            style={{ border: '1px solid #000', marginTop: '20px', zIndex: 99999 }}
+            className="position-absolute bottom-0 start-0 btn btn-info "
+            style={{ marginTop: '20px', zIndex: 99999 }}
             onClick={() => {
                 startSimulation();
             }}
         >
-            Move Image
+            Start Simulation
         </button>
         <MapContainer center={[1, 2]} zoom={2} scrollWheelZoom={false}>
             <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
@@ -184,19 +191,23 @@ function Map(props) {
                 visibleRef.current && (
                     vols.map((vol, index) => {
 
-                        //vol.trajectoires.map(()=>{
-                        //})
-
-                        const position = imagePositions[index] || [0, 0];
+                        const position = imagePositions[index] || [vol?.trajectoires[i]?.aeroportDepart?.localisation.x,vol?.trajectoires[i]?.aeroportDepart?.localisation.y];
                         console.log("position: "+ position)
-                        if ((position[0] === vol?.trajectoires[i]?.aeroportArrivet?.localisation.x) && (position[1] === vol.trajectoires[i]?.aeroportArrivet.localisation.y)){
-                            setI(i+1)
-                            console.log("i="+i);
-                            console.log("index ="+index)
-                        }
+                        console.log("mon tab"+monTableau)
+
+                        if (!positionsVerifiees.has(JSON.stringify(position))&&(position[0] === vol?.trajectoires[i]?.aeroportArrivet?.localisation.x) && (position[1] === vol.trajectoires[i]?.aeroportArrivet.localisation.y)) {
+                                monTableau[index]=1;
+                                console.log("i=" + i);
+                                console.log("index =" + index);
+                                console.log("mon tab" + monTableau);
+
+                                // Ajoutez la position vérifiée à l'ensemble
+                                positionsVerifiees.add(JSON.stringify(position));
+                                console.log("pq"+positionsVerifiees.toString())
+                            }
 
 
-                        const  rotationAngle=rotationAnglesArray[index][i];
+                        const  rotationAngle=rotationAnglesArray[index][monTableau[index]];
                         console.log("rotation ongle "+rotationAngle)
                         return (
                             <Marker

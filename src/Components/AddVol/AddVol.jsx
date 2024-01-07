@@ -9,7 +9,9 @@ function AddVol() {
     const listAeroport = aeroports.map(air => air.nom);
     const [departureAirport, setDepartureAirport] = useState('');
     const [arrivalAirport, setArrivalAirport] = useState('');
+    const [volType, setVolType] = useState('direct');
     const [airplan,setAirplan] =useState('');
+    const [types,setTypes] =useState(['direct','non direct']);
     let [visible,setVisible]=useState(true);
     useNavigate();
     async function fetchData() {
@@ -30,6 +32,9 @@ function AddVol() {
     const handleDepartureChange = (event) => {
         setDepartureAirport(event.target.value);
     };
+    const handleSelectedType = (event) => {
+        setVolType(event.target.value);
+    };
 
     const handleArrivalChange = (event) => {
         setArrivalAirport(event.target.value);
@@ -47,6 +52,7 @@ function AddVol() {
             aeroportDepart: selectedDepartureAirport,
             aeroportArrivet: selectedArrivalAirport,
             avion: selectedPlan,
+            type:volType
         };
         const apiEndpoint = 'http://localhost:8080/vols/vol';
 
@@ -73,7 +79,7 @@ function AddVol() {
             <button className={"btn btn-info "} onClick={switchv}>AddVol</button>
             <div className={"container mt-5 " + (visible ? "d-none" : "d-block")}>
                 <div className="row">
-                    <div className="col-md-4">
+                    <div className="col-md-3">
                         <h4>Choisir l'aéroport de départ</h4>
                         <select
                             className="form-select"
@@ -95,7 +101,7 @@ function AddVol() {
                         </select>
                     </div>
 
-                    <div className="col-md-4">
+                    <div className="col-md-3">
                         <h4>Choisir l'aéroport d'arrivée</h4>
                         <select
                             className="form-select"
@@ -117,7 +123,7 @@ function AddVol() {
                         </select>
                     </div>
 
-                    <div className="col-md-4">
+                    <div className="col-md-3">
                         <h4>Choisir l'avion</h4>
                         <select
                             className="form-select"
@@ -138,6 +144,27 @@ function AddVol() {
                             ) : null}
                         </select>
                     </div>
+                    <div className="col-md-3">
+                        <h4>Choisir le type de vol</h4>
+                        <select
+                            className="form-select"
+                            id="listType"
+                            name="listType"
+                            value={volType}
+                            onChange={handleSelectedType}
+                        >
+                            {types.length > 0 ? (
+                                <>
+                                    <option value={types[0]}>{types[0]}</option>
+                                    {types.slice(1).map((item, index) => (
+                                        <option key={index} value={item}>
+                                            {item}
+                                        </option>
+                                    ))}
+                                </>
+                            ) : null}
+                        </select>
+                    </div>
                 </div>
 
                 <div className="row mt-3">
@@ -146,12 +173,12 @@ function AddVol() {
                         <p>Selected departure airport: {departureAirport}</p>
                         <p>Selected arrival airport: {arrivalAirport}</p>
                         <p>Selected airplane: {airplan}</p>
+                        <p>Selected Type: {volType}</p>
                         <button className="btn btn-primary"   onClick={() => {
-                            if (departureAirport && arrivalAirport && airplan) {
+                            if (departureAirport && arrivalAirport && airplan ) {
                                 switchToSimulator();
                                 switchv();
                             } else {
-                                // Handle the case where not all values are selected
                                 alert("Please select all options before validating.");
                             }
                         }}>
