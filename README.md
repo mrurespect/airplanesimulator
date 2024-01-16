@@ -19,7 +19,7 @@ This repository consists of four branches:
 3. **gh-pages branch:** Contains the production version of the React project.
 4. **DB branch:** Contains the SQL file for the database schema.
 
-### frontend : airplanesimulato
+### Frontend : airplanesimulato
 
 The **airplanesimulator** project is a dynamic and modern web application built for simulating airplane-related experiences. It utilizes the React framework for the frontend, offering a responsive and interactive user interface. The application features FontAwesome icons for a visually appealing design and leverages libraries such as Leaflet for map visualization, Bootstrap for styling, and Axios for efficient handling of asynchronous HTTP requests. 
 ## Dependencies
@@ -33,8 +33,6 @@ The **airplanesimulator** project is a dynamic and modern web application built 
 - **React-Leaflet** 
 
 ### Backend: volApp
-
-**Version:** 0.0.1-SNAPSHOT
 
 #### Description
 
