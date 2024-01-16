@@ -1,0 +1,16 @@
+{
+  "files": {
+    "main.css": "/airplanesimulator/static/css/main.a71e7a5a.css",
+    "main.js": "/airplanesimulator/static/js/main.654c9026.js",
+    "static/js/787.f1bfe9ba.chunk.js": "/airplanesimulator/static/js/787.f1bfe9ba.chunk.js",
+    "static/media/R.gif": "/airplanesimulator/static/media/R.7bfccad0dc9c3cdcad61.gif",
+    "index.html": "/airplanesimulator/index.html",
+    "main.a71e7a5a.css.map": "/airplanesimulator/static/css/main.a71e7a5a.css.map",
+    "main.654c9026.js.map": "/airplanesimulator/static/js/main.654c9026.js.map",
+    "787.f1bfe9ba.chunk.js.map": "/airplanesimulator/static/js/787.f1bfe9ba.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.a71e7a5a.css",
+    "static/js/main.654c9026.js"
+  ]
+}
