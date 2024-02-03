@@ -1,4 +1,4 @@
-import React, {useContext, useEffect, useRef, useState} from 'react';
+import React, {useContext, useRef, useState} from 'react';
 import {MapContainer, TileLayer, Marker, Popup} from 'react-leaflet';
 import L from 'leaflet';
 
@@ -17,14 +17,10 @@ function Map(props) {
     const positionsVerifiees = new Set();
     const visibleRef = useRef(null);
     let [i,setI] =useState(0);
-    let [index,setIndex] =useState(0);
     let rotationAnglesArray = [];
     let Navigate=useNavigate();
     const [monTableau, setMonTableau] = useState([]);
 
-    useEffect(()=>{
-        setI(0);
-    },[index]);
     function switchToLogin() {
         return Navigate("/login");
     }
@@ -133,10 +129,6 @@ function Map(props) {
 
                     if (currentTrajectoryIndex < trajectories.length) {
                         animateTrajectory(vol, index, currentTrajectoryIndex);
-                    } else {
-                        if (index === vols.length - 1) {
-                           // visibleRef.current = false;
-                        }
                     }
                 }
             };
@@ -153,7 +145,6 @@ function Map(props) {
     const moveImages = () => {
         visibleRef.current = true;
         vols.forEach((vol, index) => {
-
             animateTrajectory(vol, index, 0);
         });
     };
@@ -201,13 +192,14 @@ function Map(props) {
                                 console.log("index =" + index);
                                 console.log("mon tab" + monTableau);
 
-                                // Ajoutez la position vérifiée à l'ensemble
                                 positionsVerifiees.add(JSON.stringify(position));
                                 console.log("pq"+positionsVerifiees.toString())
                             }
-
-
-                        const  rotationAngle=rotationAnglesArray[index][monTableau[index]];
+                        if ((position[0] === vol?.aeroportArrivet?.localisation.x) && (position[1] === vol.aeroportArrivet.localisation.y)) {
+                            console.log("arrived ");
+                            return null ;
+                        }
+                            const  rotationAngle=rotationAnglesArray[index][monTableau[index]];
                         console.log("rotation ongle "+rotationAngle)
                         return (
                             <Marker
@@ -243,17 +235,3 @@ const planIcon = new L.Icon({
 L.Marker.prototype.options.icon = DefaultIcon;
 
 export default Map;
-
-/*
-* map vols -> length
-
-J hook = lenght
-if vol.aeoroport arrivee = position
-J--
-if J==0 visibleRef.false
-
-____________________________________
-if vol.aeropot arrivee =position{
-	set.add position
-	if set.lenght==vol.lenght : visibleRef.false ;;
-}*/
