@@ -31,7 +31,3 @@ The **airplanesimulator** project is a dynamic and modern web application built 
 - **Axios** 
 - **React Router** 
 - **React-Leaflet**
-
-- ### full source code
-- https://github.com/mrurespect/vol-simulator
-- 
